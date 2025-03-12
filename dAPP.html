@@ -193,30 +193,45 @@
         <p>© 2025 Mindfulness Community</p>
     </footer>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const professionals = [
-                { name: 'Dr. John Doe', address: '0x123...' },
-                { name: 'Jane Smith', address: '0x456...' }
-            ];
-            const professionalList = document.getElementById('professionalList');
-            professionals.forEach(professional => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <div>
-                        <h4>${professional.name}</h4>
-                        <button type="button" class="vote-button" data-vote="1" data-address="${professional.address}">Upvote</button>
-                        <button type="button" class="vote-button" data-vote="2" data-address="${professional.address}">Downvote</button>
-                    </div>
-                `;
-                professionalList.appendChild(li);
-            });
-
-            const hivesignerLoginButton = document.getElementById('hivesigner-login');
-            hivesignerLoginButton.addEventListener('click', function() {
-                window.location.href = 'http://localhost:3000/login'; // Adjust URL as needed
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        const professionals = [
+            { name: 'Dr. John Doe', address: '0x123...' },
+            { name: 'Jane Smith', address: '0x456...' }
+        ];
+        const professionalList = document.getElementById('professionalList');
+        professionals.forEach(professional => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div>
+                    <h4>${professional.name}</h4>
+                    <button type="button" class="vote-button" data-vote="1" data-address="${professional.address}">Upvote</button>
+                    <button type="button" class="vote-button" data-vote="2" data-address="${professional.address}">Downvote</button>
+                </div>
+            `;
+            professionalList.appendChild(li);
         });
-    </script>
+
+        const hivesignerLoginButton = document.getElementById('hivesigner-login');
+        hivesignerLoginButton.addEventListener('click', function() {
+            window.location.href = 'http://localhost:3000/login'; // Adjust URL as needed
+        });
+
+        // Handle HiveSigner callback
+        const urlParams = new URLSearchParams(window.location.search);
+        const accessToken = urlParams.get('access_token');
+        if (accessToken) {
+            fetch(`http://localhost:3000/callback?access_token=${accessToken}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('User authenticated', data);
+                    // Handle authenticated user data
+                })
+                .catch(error => {
+                    console.error('Error during authentication', error);
+                });
+        }
+    });
+</script>
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery.easing.1.3.js"></script>
     <script src="js/bootstrap.min.js"></script>
